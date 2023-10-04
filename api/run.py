@@ -1,24 +1,14 @@
-from flask import Flask
+from http.server import BaseHTTPRequestHandler
+from os.path import join
 
 
-app = Flask(__name__)
+class handler(BaseHTTPRequestHandler):
 
-
-@app.route('/')
-def home():
-    return 'Home Page Route'
-
-
-@app.route('/about')
-def about():
-    return 'About Page Route'
-
-
-@app.route('/portfolio')
-def portfolio():
-    return 'Portfolio Page Route'
-
-
-@app.route('/contact')
-def contact():
-    return 'Contact Page Route'
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/plain')
+        self.end_headers()
+        with open(join('data', 'file.txt'), 'r') as file:
+            for line in file:
+                self.wfile.write(line.encode())
+        return
